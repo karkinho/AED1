@@ -19,9 +19,6 @@ int main(int argc, char const *argv[])
     insert( l1 , 20 );
     insert( l2 , 20 );
     print( addTwoNumbers( l1, l2 ) );
-
-
-
     return 0;
 }
 
