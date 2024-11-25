@@ -48,7 +48,6 @@ struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
     struct ListNode* ans;
     ans = ansReturn;
     while ( 1 ) {
-        sum = 0;
         sum = l1->val + l2->val + pass;
         pass = 0;
         if ( sum >= 10) {
