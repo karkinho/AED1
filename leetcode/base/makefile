@@ -1,3 +1,5 @@
 all: 
-	gcc ./src/main.c ./src/test.c ./src/lib.h -Wall -o main
-	./main
+	gcc ./src/main.c ./src/test.c -Wall -g -o app
+	./app
+comp:
+	gcc ./src/main.c ./src/test.c -Wall -g -o app
