@@ -6,12 +6,17 @@ int main( int argc , char const *argv[] ) {
     int * returnSize = ( int *)malloc( sizeof( int ) );
     int ** returnColumnSizes = ( int **)malloc( sizeof( int *) );
     
-    // int test1[6] = {-1,0,1,2,-1,-4}; // [[-1,-1,2],[-1,0,1]]
-    // int ** ans = threeSum( test1 , 6 , returnSize , returnColumnSizes );
+    int test1[6] = {-1,0,1,2,-1,-4}; // [[-1,-1,2],[-1,0,1]]
+    int ** ans;
+    ans = threeSum( test1 , 6 , returnSize , returnColumnSizes );
+    printMatrix( ans , returnSize , returnColumnSizes );
 
     int test2[11] = {-1,0,1,2,-1,-4,-2,-3,3,0,4}; // [[-4,0,4],[-4,1,3],[-3,-1,4],[-3,0,3],[-3,1,2],[-2,-1,3],[-2,0,2],[-1,-1,2],[-1,0,1]]
-    int ** ans = threeSum( test2 , 11 , returnSize , returnColumnSizes );
+    ans = threeSum( test2 , 11 , returnSize , returnColumnSizes );
     printMatrix( ans , returnSize , returnColumnSizes );
+
+    free( returnSize );
+
     return 0;
 }
 
