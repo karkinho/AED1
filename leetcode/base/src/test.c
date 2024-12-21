@@ -1,5 +1,15 @@
 #include "lib.h"
 
+
+void testMatrixNUM() {
+    int ** returnColumnSizes = ( int **)malloc( sizeof( int * )) , * returnSize = ( int *)malloc( sizeof( int ) );
+    int ** ans; 
+    printMatrix( ans , returnSize , returnColumnSizes );
+    free( returnSize );
+    free( returnColumnSizes );
+    // resposta correta aqui
+}
+
 void printMatrix( int ** matrix , int* returnSize , int** returnColumnSizes ) {
     int **aux;
     for ( int row = 0 ; row < *returnSize ; row++ ) {
@@ -10,10 +20,10 @@ void printMatrix( int ** matrix , int* returnSize , int** returnColumnSizes ) {
         printf("]\n");        
     }
     aux = matrix;
-    for ( int row = 0 ; row < *returnSize ; row++ ) {
+    for ( int row = 0 ; row < *returnSize ; row++ , aux++ ) {
         free( *aux );
-        aux++;
     }
+    free( matrix );
     free( *returnColumnSizes );
     printf("Test Finish\n");
 }

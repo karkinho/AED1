@@ -10,10 +10,10 @@ void printMatrix( int ** matrix , int* returnSize , int** returnColumnSizes ) {
         printf("]\n");        
     }
     aux = matrix;
-    for ( int row = 0 ; row < *returnSize ; row++ ) {
+    for ( int row = 0 ; row < *returnSize ; row++ , aux++ ) {
         free( *aux );
-        aux++;
     }
+    free( matrix );
     free( *returnColumnSizes );
-    printf("Test Finish\n");
+    printf( "------Test Finish------\n" );
 }

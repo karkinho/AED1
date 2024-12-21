@@ -5,4 +5,4 @@
 #include <limits.h>
 #include <stdlib.h>
 
-void printMatrix( int ** matrix , int* returnSize , int** returnColumnSizes );
+void testMatrix( int ** matrix , int* returnSize , int** returnColumnSizes );

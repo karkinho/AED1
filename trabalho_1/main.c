@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define size 5
+#define size 15
 
 int** generate(int numRows, int* returnSize, int** returnColumnSizes);
 
