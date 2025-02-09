@@ -4,3 +4,6 @@
 #include <math.h>
 #include <limits.h>
 #include <stdlib.h>
+
+void Test1();
+void Test2();

@@ -4,3 +4,5 @@
 #include <math.h>
 #include <limits.h>
 #include <stdlib.h>
+
+void testMatrix( int ** matrix , int* returnSize , int** returnColumnSizes );
