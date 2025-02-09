@@ -79,6 +79,7 @@ double maxAverageRatio(int** classes, int classesSize, int* classesColSize, int 
         Heapfy( heap , size , i );
     }
 
+    AddStudents( extraStudents , heap , &size );
 
     for ( int index = 0 ; index < classesSize ; index++ ) {
         ans += ( double)( heap[index].array[0] ) / ( double)( heap[index].array[1] );
