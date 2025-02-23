@@ -3,14 +3,14 @@
 #include <stdbool.h>
 
 typedef struct Node Node;
-typedef struct container container;
+typedef struct Container Container;
 
-struct container {
+struct Container {
     int value;
 };  
 
 struct Node {
-    container *info;
+    Container *info;
     void * left , * right; 
 };
 
@@ -19,8 +19,9 @@ void List( Node ** stump );
 void PreOrdem( Node * node , int height );
 Node **SearchPush( Node * node , int value );
 void Pop( Node ** stump, int value );
-Node * SearchPop( Node * node , int value );
-bool FindReaplacePop( Node * node , container * replacement );
+Node ** FindPop( Node ** node , int value );
+Node ** SearchReplacementPop( Node ** node );
+void Clear( Node ** stump );
 
 int main( int argc , char const *argv[] ) {
     Node *stump = NULL;
@@ -37,13 +38,27 @@ int main( int argc , char const *argv[] ) {
     Push( &stump , 90 );
     Push( &stump , 1 );
     List( &stump );
-
+    Pop( &stump , 10 );
+    Pop( &stump , 20 );
+    Pop( &stump , 15 );
+    Pop( &stump , 5 );
+    Pop( &stump , 90 );
+    Pop( &stump , 1 );
+    List( &stump );
+    Clear( &stump );
+    List( &stump );
     return 0;
+}
+
+void Clear( Node ** stump ) {
+    while ( *stump != NULL ) {
+        Pop( stump , ( * stump )->info->value );
+    }
 }
 
 void Push( Node ** stump , int value ) {
     Node * newNode = ( Node * )malloc( sizeof( Node ) ) , ** temp = NULL ;
-    container * newContainer = ( container * )malloc( sizeof( container ) );
+    Container * newContainer = ( Container * )malloc( sizeof( Container ) );
     newContainer->value = value;
     newNode->info = newContainer;
     newNode->left = NULL;
@@ -99,31 +114,72 @@ void PreOrdem( Node * node  , int height ){
     return;
 }
 
-/*void Pop( Node ** stump, int value ){
-    if ( *stump == NULL ) {
-        printf( "b_tree vaiza\n" );
+void Pop( Node ** stump, int value ) {
+    Node ** node = NULL , * auxP = NULL , ** auxPP = NULL ;
+    if( *stump == NULL ) {
+        printf( "b_tree vazia\n" );
         return;
     }
-    container * replacement = NULL;
-    Node * temp = SearchPop( *stump , value );
-    if( temp->right == NULL && temp ) {
+    node = FindPop( stump , value );
 
+    if( node == NULL ) {
+        printf( "não encontrado\n" );
+        return;
     }
-    Node ** aux = FindReaplacePop( temp , replacement );
-    
+
+    if ( ( * node )->right != NULL && ( * node )->left != NULL ) { //pior caso
+        auxPP = SearchReplacementPop( ( Node ** )( &( * node )->right ) );
+        free( ( * node )->info );
+        ( * node )->info = ( * auxPP )->info; 
+        auxP = ( * auxPP )->right;
+        free( * auxPP );
+        * auxPP = auxP;
+        return;
+    } 
+
+    if( ( * node )->right == NULL && ( * node )->left == NULL ) { // melhor caso
+        free( ( * node )->info );
+        ( * node )->info = NULL;
+        auxP = * node;
+        *node = NULL;
+        free( auxP );
+        return;
+    }
+
+    if ( ( * node )->right != NULL ) {
+        auxP = ( * node )->right;
+        free( ( * node )->info );
+        free( * node );
+        *node = auxP;
+        return;
+    }
+
+    if ( ( * node )->left != NULL ) {
+        auxP = ( * node )->left;
+        free( ( * node )->info );
+        free( * node );
+        *node = auxP;
+        return;
+    }
 }
-Node * SearchPop( Node * node , int value ) {
-    if( node->info->value == value ) {
+
+Node ** SearchReplacementPop( Node ** node ) {
+    if( ( * node )->left != NULL ) {
+        return SearchReplacementPop( ( Node ** )( &( * node )->left ) );
+    }
+    return node;
+}
+
+
+Node ** FindPop( Node ** node , int value ) {
+    if( ( * node )->info->value == value ) {
         return node;
     }
-    if( node->info->value < value ) {
-        return SearchPop( node->right , value );
+    if( ( * node )->info->value < value ) {
+        return FindPop( ( Node ** )( &( * node )->right ) , value );
     }
-    if( node->info->value > value ) {
-        return SearchPop( node->left , value );
+    if( ( * node )->info->value > value ) {
+        return FindPop( ( Node ** )( &( * node )->left ) , value );
     }
     return NULL;
 }
-bool FindReaplacePop( Node * node , container * replacement ){
-    
-}*/
