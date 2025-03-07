@@ -14,7 +14,7 @@ struct Node {
     Node *left , *right , *parent;
 };
 
-
+ 
 void InOrder( Node * root , int height );
 void Push( Node ** node , int val );
 void CaseRoot( Node * node );  
@@ -30,23 +30,87 @@ bool IsValid( Node * node );
 bool RootValid( Node * node );
 bool RedSonsValid( Node * node );
 int BlackPathsValid( Node * node );
+void Pop( Node ** node , int val );
+Node * Search( Node * node , int val );
+void Transplant( Node * source , Node * destiny );
+Node * Replacement( Node * delete );
 
 Node * root = NULL;
 
 int main() {
     srand( time( NULL ) );
-    for ( int i = 0 ; i < 50 ; i++ ) {
-        Push( &root , rand() % MAX + MIN );
+    for ( int i = 0 ; i < 50000 ; i++ ) {
+        //Push( &root , rand() % MAX + MIN );
         //InOrder( root , 0 );
         //printf( "-------------------\n" );
     }
+    /*Push( &root , 50 );
+    Push( &root , 25 );
+    Push( &root , 30 );
+    Push( &root , 40 );
+    Push( &root , 90 );
+    Push( &root , 87 );
+    Push( &root , 68 );
+    Push( &root , 20 ); */
     InOrder( root , 0 );
+    //Pop( &root , 25 );
     printf( "Valid: %d\n", IsValid( root ) );
     return 0;
 }
 
+void Pop( Node ** node , int val ) {
+    Node * delete = Search( *node , val );
+    Node * replacement = NULL;
+    Node * nil = ( Node * )malloc( sizeof( Node ) );
+
+    if( delete->right == NULL ) {
+        replacement = delete->left;
+    } else {
+        replacement = Replacement( delete->right );
+    }
+    printf( "%d\n", replacement->val );
+
+
+
+
+}
+
+Node * Replacement( Node * delete ) {
+    if( delete->left == NULL ) {
+        return delete;
+    } 
+    return Replacement( delete->left );
+}
+
+void Transplant( Node * source , Node * destiny ) {
+    if( destiny->parent == NULL ) {
+    }
+
+    source->parent = destiny->parent;
+    destiny->parent = NULL;
+}
+
+Node * Search( Node * node , int val ) {
+    if( node == NULL ) {
+        return NULL;
+    }
+    if( node->val == val ) {
+        return node;
+    }
+    if( node->val > val ) {
+        return Search( node->left , val );
+    } else {
+        return Search( node->right , val );
+    }
+}
+
+
 bool IsValid( Node * node ) {
-    return RootValid( node ) && RedSonsValid( node ) ;
+    if( BlackPathsValid( node ) > 0 ) {
+        return RootValid( node ) && RedSonsValid( node ) ;
+    } else {
+        return false;
+    }
 }
 
 bool RootValid( Node * node ) {
@@ -77,8 +141,23 @@ bool RedSonsValid( Node * node ) {
 }
 
 int BlackPathsValid( Node * node ) {
+    if( node == NULL ) {
+        return 1;
+    }
+    int left = BlackPathsValid( node->left );
+    int right = BlackPathsValid( node->right );
 
+    if( left == -1 || right == -1 ) {
+        return -1;
+    }
 
+    int current = ( node->color == false ) ? 1 : 0;
+
+    if( left == right ) {
+        return left + current;
+    } else {
+        return -1;
+    }
 }
 
 void Insert( Node ** node , int val ) {
@@ -175,7 +254,7 @@ void Case2( Node * node ) {
     }
     g->color = true;
     g->parent->color = false;
-    CaseRoot( g->parent );
+    CaseRoot( g );
 }
 
 void RotateLeft( Node * node ) {
