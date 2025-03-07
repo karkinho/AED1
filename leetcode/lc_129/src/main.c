@@ -10,7 +10,7 @@ struct TreeNode {
 
 int sumNumbers(struct TreeNode* root);
 
-void Sum( struct TreeNode * root , int * array , int * sum , int size );
+void Sum( struct TreeNode * root , int localSum , int * sum );
 
 int main( ) {
     return 0;
@@ -18,30 +18,25 @@ int main( ) {
 
 
 int sumNumbers(struct TreeNode* root) {
-    int * array = ( int * )malloc( sizeof( int ) * 10 ), sum = 0;
+    int sum = 0;
     if( root == NULL ) {
         return 0;
     }
-    Sum( root , array , &sum , -1 );
+    Sum( root , 0 , &sum );
     return sum;
 }
 
-void Sum( struct TreeNode * root , int * array , int * sum , int size ) {
-    int localSum = 0;
-    size += 1;
-    array[ size ] = root->val;
+void Sum( struct TreeNode * root , int localSum , int * sum ) {
+    localSum += root->val;
     if( root->left == NULL && root->right == NULL ) {
-        for ( int i = 0; i <= size ; i++ ) {
-            localSum += array[i] * pow( 10 , ( size - i ) ) ;
-        }
-        printf( "%d\n", localSum );
         *sum += localSum;
+        return;
     }
-
+    localSum = localSum * 10;
     if( root->left != NULL ) {
-        Sum( root->left , array , sum , size );
+        Sum( root->left , localSum , sum );
     }
     if( root->right != NULL ) {
-        Sum( root->right , array , sum , size );
+        Sum( root->right , localSum , sum );
     }
 }
